@@ -1,0 +1,33 @@
+from PIL import Image
+import numpy as np
+
+def encrypt_decrypt_image(image_path, key):
+    
+    try:
+        img = Image.open(image_path)
+        img_array = np.array(img)
+        encrypted_array = np.bitwise_xor(img_array, key)
+        return Image.fromarray(encrypted_array)
+
+    except Exception as error:
+        print(f"[Error] Couldn't process image: {error}")
+        return None
+
+
+
+
+if __name__ == "__main__":
+    key = 128
+    input_image = "rose.jpg"
+
+    # Encrypt the image
+    encrypted_img = encrypt_decrypt_image(input_image, key)
+    if encrypted_img:
+        encrypted_img.save("rose_encrypted.jpg")
+        print("Encrypted image saved.")
+
+    # Decrypt the image
+    decrypted_img = encrypt_decrypt_image("rose_encrypted.jpg", key)
+    if decrypted_img:
+        decrypted_img.save("rose_decrypted.jpg")
+        print("Decrypted image saved.")
